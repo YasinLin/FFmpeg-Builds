@@ -10,6 +10,9 @@ cat <<EOF >"$TMPCFG"
 EOF
 trap "rm -f '$TMPCFG'" EXIT
 
+export HTTP_PROXY=http://172.17.0.1:7890 HTTPS_PROXY=http://172.17.0.1:7890 NO_PROXY=localhost,127.0.0.1,.coding.net,.tencentyun.com,.myqcloud.com,harbor.bsgchina.com,git.libssh.org
+
+
 docker buildx inspect ffbuilder &>/dev/null || docker buildx create \
     --bootstrap \
     --name ffbuilder \
@@ -17,6 +20,7 @@ docker buildx inspect ffbuilder &>/dev/null || docker buildx create \
     --driver-opt network=host \
     --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=-1 \
     --driver-opt env.BUILDKIT_STEP_LOG_MAX_SPEED=-1
+
 
 if [[ -z "$QUICKBUILD" ]]; then
     BASE_IMAGE_TARGET="${PWD}/.cache/images/base"
@@ -36,7 +40,6 @@ if [[ -z "$QUICKBUILD" ]]; then
             --cache-from=type=local,src=.cache/"${TARGET_IMAGE/:/_}" \
             --cache-to=type=local,mode=max,dest=.cache/"${TARGET_IMAGE/:/_}" \
             --build-arg GH_REPO="${REGISTRY}/${REPO}" \
-            --build-context "${BASE_IMAGE}=oci-layout://${BASE_IMAGE_TARGET}" \
             --load --tag "${TARGET_IMAGE}" \
             "images/base-${TARGET}"
         mkdir -p "${IMAGE_TARGET}"
@@ -54,7 +57,6 @@ fi
 docker buildx --builder ffbuilder build \
     --cache-from=type=local,src=.cache/"${IMAGE/:/_}" \
     --cache-to=type=local,mode=max,dest=.cache/"${IMAGE/:/_}" \
-    --build-context "${TARGET_IMAGE}=${CONTEXT_SRC}" \
     --load --tag "$IMAGE" .
 
 if [[ -z "$NOCLEAN" ]]; then

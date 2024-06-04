@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_REPO="https://source.openmpt.org/svn/openmpt/trunk/OpenMPT"
-SCRIPT_REV="20865"
+SCRIPT_REV="20866"
 
 ffbuild_enabled() {
     [[ $TARGET == winarm64 ]] && return -1
@@ -9,7 +9,7 @@ ffbuild_enabled() {
 }
 
 ffbuild_dockerdl() {
-    echo "retry-tool sh -c \"rm -rf openmpt && svn checkout '${SCRIPT_REPO}@${SCRIPT_REV}' openmpt\" && cd openmpt"
+    echo "retry-tool sh -c \"rm -rf openmpt && svn checkout --config-option servers:global:http-proxy-host=172.17.0.1 --config-option servers:global:http-proxy-port=7890 '${SCRIPT_REPO}@${SCRIPT_REV}' openmpt\" && cd openmpt"
 }
 
 ffbuild_dockerbuild() {

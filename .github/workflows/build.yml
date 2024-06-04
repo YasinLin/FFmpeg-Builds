@@ -55,14 +55,14 @@ jobs:
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: dc.qyt.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Image Name
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/base"
-          echo "name=ghcr.io/${IMG/ /-}" >> $GITHUB_OUTPUT
+          echo "name=dc.qyt.com/${IMG/ /-}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
       - name: Stop Commands
         run: T="$(echo -n ${{ github.token }} | sha256sum | head -c 64)" && echo -e "::add-mask::${T}\n::stop-commands::${T}"
@@ -123,14 +123,14 @@ jobs:
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: dc.qyt.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Image Name
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/base-${{ matrix.target }}"
-          echo "name=ghcr.io/${IMG/ /-}" >> $GITHUB_OUTPUT
+          echo "name=dc.qyt.com/${IMG/ /-}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
           echo "gh_repo=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
       - name: Stop Commands
@@ -146,7 +146,7 @@ jobs:
           cache-to: type=registry,mode=max,ref=${{ steps.imagename.outputs.name }}:cache
           cache-from: type=registry,ref=${{ steps.imagename.outputs.name }}:cache
           build-args: |
-            GH_REPO=ghcr.io/${{ steps.imagename.outputs.gh_repo }}
+            GH_REPO=dc.qyt.com/${{ steps.imagename.outputs.gh_repo }}
       - name: Cleanup
         continue-on-error: true
         uses: BtbN/delete-untagged-ghcr-action@main
@@ -179,14 +179,14 @@ jobs:
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: dc.qyt.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Image Name
         id: imagename
         run: |
           IMG="${GITHUB_REPOSITORY,,}/${{ matrix.target }}-${{ matrix.variant }}"
-          echo "name=ghcr.io/${IMG/ /-}" >> $GITHUB_OUTPUT
+          echo "name=dc.qyt.com/${IMG/ /-}" >> $GITHUB_OUTPUT
           echo "rawname=${IMG/ /-}" >> $GITHUB_OUTPUT
       - name: Get download cache key
         id: dl_cache
@@ -240,7 +240,7 @@ jobs:
       - name: Login to Docker
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: dc.qyt.com
           username: ${{ github.actor }}
           password: ${{ github.token }}
       - name: Build ffmpeg

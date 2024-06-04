@@ -1,5 +1,8 @@
-ARG GH_REPO=ghcr.io/btbn/ffmpeg-builds
-FROM $GH_REPO/base:latest
+ARG GH_REPO=dc.qyt.com/btbn/ffmpeg-builds
+FROM $GH_REPO/base:latest\
+
+ENV HTTP_PROXY=http://172.17.0.1:7890 HTTPS_PROXY=http://172.17.0.1:7890 NO_PROXY=localhost,127.0.0.1,.coding.net,.tencentyun.com,.myqcloud.com,harbor.bsgchina.com,git.libssh.org
+
 
 RUN --mount=src=ct-ng-config,dst=/.config \
     git clone --filter=blob:none https://github.com/crosstool-ng/crosstool-ng.git /ct-ng && cd /ct-ng && \

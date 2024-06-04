@@ -21,6 +21,8 @@ ffbuild_dockerbuild() {
     # Luckily no target libraries are needed.
     unset PKG_CONFIG_LIBDIR
 
+    export HTTP_PROXY=http://172.17.0.1:7890 HTTPS_PROXY=http://172.17.0.1:7890 NO_PROXY=localhost,127.0.0.1,.coding.net,.tencentyun.com,.myqcloud.com,harbor.bsgchina.com,git.libssh.org
+
     cargo cinstall -v "${myconf[@]}"
 
     chmod 644 "${FFBUILD_PREFIX}"/lib/*rav1e*

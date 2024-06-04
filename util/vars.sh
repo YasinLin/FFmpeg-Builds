@@ -32,7 +32,7 @@ done
 
 REPO="${GITHUB_REPOSITORY:-btbn/ffmpeg-builds}"
 REPO="${REPO,,}"
-REGISTRY="${REGISTRY_OVERRIDE:-ghcr.io}"
+REGISTRY="${REGISTRY_OVERRIDE:-dc.qyt.com}"
 BASE_IMAGE="${REGISTRY}/${REPO}/base:latest"
 TARGET_IMAGE="${REGISTRY}/${REPO}/base-${TARGET}:latest"
 IMAGE="${REGISTRY}/${REPO}/${TARGET}-${VARIANT}${ADDINS_STR:+-}${ADDINS_STR}:latest"
@@ -41,7 +41,7 @@ ffbuild_dockerstage() {
     if [[ -n "$SELFCACHE" ]]; then
         to_df "RUN --mount=src=${SELF},dst=/stage.sh --mount=src=${SELFCACHE},dst=/cache.tar.xz run_stage /stage.sh"
     else
-        to_df "RUN --mount=src=${SELF},dst=/stage.sh run_stage /stage.sh"
+        to_df "RUN --mount=src=${SELF},dst=/stage.sh  run_stage /stage.sh"
     fi
 }
 

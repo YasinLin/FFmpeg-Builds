@@ -13,8 +13,10 @@ ffbuild_dockerbuild() {
 
     local myconf=(
         --prefix="$FFBUILD_PREFIX"
-        --enable-shared
-        --disable-static
+        # --enable-shared
+        # --disable-static
+        --disable-shared
+        --enable-static
         --with-pic
         --disable-devel-docs
     )

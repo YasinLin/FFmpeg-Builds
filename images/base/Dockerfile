@@ -1,6 +1,7 @@
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV HTTP_PROXY=http://172.17.0.1:7890 HTTPS_PROXY=http://172.17.0.1:7890 NO_PROXY=localhost,127.0.0.1,.coding.net,.tencentyun.com,.myqcloud.com,harbor.bsgchina.com,git.libssh.org
 RUN \
     apt-get -y update && \
     apt-get -y dist-upgrade && \
@@ -11,7 +12,7 @@ RUN \
         gperf itstool ragel libc6-dev zlib1g-dev libssl-dev \
         gtk-doc-tools gobject-introspection gawk \
         ocaml ocamlbuild libnum-ocaml-dev indent p7zip-full \
-        python3-setuptools python3-jinja2 python3-jsonschema python3-apt python-is-python3 && \
+        python3-setuptools python3-jinja2 python3-jsonschema python3-apt python-is-python3 build-essential libgl1-mesa-dev  && \
     apt-get -y clean && \
     git config --global user.email "builder@localhost" && \
     git config --global user.name "Builder" && \

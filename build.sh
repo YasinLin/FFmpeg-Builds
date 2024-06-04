@@ -34,8 +34,19 @@ cat <<EOF >"$BUILD_SCRIPT"
     cd /ffbuild
     rm -rf ffmpeg prefix
 
+    export HTTP_PROXY=http://172.17.0.1:7890 HTTPS_PROXY=http://172.17.0.1:7890 NO_PROXY=localhost,127.0.0.1,.coding.net,.tencentyun.com,.myqcloud.com,harbor.bsgchina.com,git.libssh.org
+
+    git clone --branch='ffmpeg6' 'https://github.com/YasinLin/ffmpeg-gl-transition.git' ffmpeg-gl-transition
+
     git clone --filter=blob:none --branch='$GIT_BRANCH' '$FFMPEG_REPO' ffmpeg
+
     cd ffmpeg
+
+    cp "../ffmpeg-gl-transition/vf_gltransition.c" "./libavfilter/"
+
+    git apply ../ffmpeg-gl-transition/ffmpeg6.0.diff
+
+    FF_CONFIGURE="\$FF_CONFIGURE --enable-opengl --enable-filter=gltransition" 
 
     ./configure --prefix=/ffbuild/prefix --pkg-config-flags="--static" \$FFBUILD_TARGET_FLAGS \$FF_CONFIGURE \
         --extra-cflags="\$FF_CFLAGS" --extra-cxxflags="\$FF_CXXFLAGS" --extra-libs="\$FF_LIBS" \
